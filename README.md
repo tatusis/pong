@@ -32,7 +32,7 @@ python src/main/pong.py
 
 ## Gameplay
 
-The game requires two players. The player controlling the left paddle should use the W (up) and S (down) keys. The player controlling the right paddle should use the up ↑ and down ↓ arrow keys.
+The game requires two players. The player controlling the left paddle should use the W (up) and S (down) keys. The player controlling the right paddle should use the up ↑ and down ↓ arrow keys. Holding down the keys causes the paddle speed to accelerate. With each hit, the ball's speed increases by 10%. There's a maximum speed to keep the game's physics consistent.
 
 ## License
 
