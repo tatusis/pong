@@ -32,7 +32,7 @@ python src/main/pong.py
 
 ## Gameplay
 
-The game requires two players. The player controlling the left paddle should use the w (up) and s (down) keys. The player controlling the right paddle should use the up and down arrow keys.
+The game requires two players. The player controlling the left paddle should use the W (up) and S (down) keys. The player controlling the right paddle should use the up ↑ and down ↓ arrow keys.
 
 ## License
 
