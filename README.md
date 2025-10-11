@@ -30,6 +30,10 @@ pip install -r requirements.txt
 python src/main/pong.py
 ```
 
+## Gameplay
+
+The game requires two players. The player controlling the left paddle should use the w (up) and s (down) keys. The player controlling the right paddle should use the up and down arrow keys.
+
 ## License
 
 GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
