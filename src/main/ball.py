@@ -1,11 +1,12 @@
 # ball.py
 
-import pygame
-import random
-from event import Event
 import math
-from side import Side
+import random
+
+import pygame
 from ball_state import BallState
+from event import Event
+from side import Side
 
 
 class Ball(pygame.sprite.Sprite):
@@ -53,29 +54,13 @@ class Ball(pygame.sprite.Sprite):
 
     def handle_playing_state(self, dt: float) -> None:
         """Gerencia a bola em jogo"""
+        self.rect.centerx += round(self.velocity.x * dt)
         self.rect.centery += round(self.velocity.y * dt)
-
-        changex = round(self.velocity.x * dt)
-
-        ball_left = self.rect.left + changex
-        ball_right = self.rect.right + changex
-
-        if ball_right >= self.screen.get_rect().left and ball_left <= self.screen.get_rect().right:
-            self.rect.centerx += changex
-        else:
-            if self.velocity.x < 0:
-                self.rect.right = self.screen.get_rect().left
-                pygame.event.post(pygame.event.Event(Event.LEFT_GOAL.value))
-            elif self.velocity.x > 0:
-                self.rect.left = self.screen.get_rect().right
-                pygame.event.post(pygame.event.Event(Event.RIGHT_GOAL.value))
-
-            self.state = BallState.WAITING
 
     def reset_position(self) -> None:
         """Reconfigura a posição da bola"""
         y = random.randrange(
-            self.screen.get_rect().top + (self.settings["wall.height"] * 2),
+            self.screen.get_rect().top + (self.settings["wall.size"] * 2),
             self.screen.get_rect().bottom,
             self.settings["ball.size"] * 2,
         )

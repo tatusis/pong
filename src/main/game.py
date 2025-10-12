@@ -1,13 +1,15 @@
 # game.py
 
 import pygame
-from paddle import Paddle
 from ball import Ball
-from side import Side
-from event import Event
-from wall import Wall
+from ball_state import BallState
 from dashed_line import DashedLine
+from event import Event
+from goal import Goal
+from paddle import Paddle
 from scene import Scene
+from side import Side
+from wall import Wall
 
 
 class Game:
@@ -23,6 +25,8 @@ class Game:
         # Sprites
         self.top_wall = Wall(self.screen, Side.TOP, self.settings)
         self.bottom_wall = Wall(self.screen, Side.BOTTOM, self.settings)
+        self.left_goal = Goal(self.screen, Side.LEFT, self.settings)
+        self.right_goal = Goal(self.screen, Side.RIGHT, self.settings)
         self.left_paddle = Paddle(self.screen, Side.LEFT, self.settings)
         self.right_paddle = Paddle(self.screen, Side.RIGHT, self.settings)
         self.ball = Ball(self.screen, self.settings)
@@ -31,6 +35,8 @@ class Game:
         self.sprites = pygame.sprite.LayeredUpdates()
         self.sprites.add(self.top_wall)
         self.sprites.add(self.bottom_wall)
+        self.sprites.add(self.left_goal)
+        self.sprites.add(self.right_goal)
         self.sprites.add(self.left_paddle)
         self.sprites.add(self.right_paddle)
         self.sprites.add(self.ball)
@@ -65,6 +71,10 @@ class Game:
         self.walls = [self.top_wall, self.bottom_wall]
         self.walls_rects = [self.top_wall.rect, self.bottom_wall.rect]
 
+        # Goals
+        self.goals = [self.left_goal, self.right_goal]
+        self.goals_rects = [self.left_goal.rect, self.right_goal.rect]
+
         self.accumulator = 0.0
         self.time_step = 1.0 / (self.settings["game.fps"] * 2.0)
         self.running = True
@@ -83,12 +93,6 @@ class Game:
                 self.running = False
             elif event.type == Event.START.value:
                 self.start_channel.play(self.start_sound)
-            elif event.type == Event.LEFT_GOAL.value:
-                self.handle_goal(Side.LEFT)
-            elif event.type == Event.RIGHT_GOAL.value:
-                self.handle_goal(Side.RIGHT)
-            elif event.type == Event.WALL_COLLISION.value:
-                self.play_collision_sound()
 
     def play_collision_sound(self) -> None:
         """Reproduz o som de colisão"""
@@ -141,6 +145,14 @@ class Game:
                 ):
                     self.play_collision_sound()
                     self.ball.velocity.y *= -1
+
+            # Colisão com os gols
+            collided_goal_index = self.ball.rect.collidelist(self.goals_rects)
+
+            if collided_goal_index != -1 and self.ball.state == BallState.PLAYING:
+                collided_goal = self.goals[collided_goal_index]
+                self.handle_goal(collided_goal.side)
+                self.ball.state = BallState.WAITING
 
             self.accumulator -= self.time_step
 
