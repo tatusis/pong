@@ -9,65 +9,23 @@ from wall import Wall
 from dashed_line import DashedLine
 from scene import Scene
 
-FPS = 60.0
-SCREEN_COLOR = pygame.color.THECOLORS["grey0"]
-FONT_FAMILY = "resources/Minisystem.otf"
-FONT_SIZE = 90
-TEXT_COLOR = pygame.color.THECOLORS["grey50"]
-START_SOUND = "resources/start.mp3"
-COLLISION_SOUND = "resources/collision.mp3"
-COLLISION_SOUND_COOLDOWN = 0.085
-SCORE_SOUND = "resources/score.mp3"
-
 
 class Game:
     """Define uma sessão do jogo"""
 
-    __slots__ = (
-        "scene_name",
-        "next_scene_name",
-        "screen",
-        "top_wall",
-        "bottom_wall",
-        "left_paddle",
-        "right_paddle",
-        "ball",
-        "sprites",
-        "start_sound",
-        "collision_sound",
-        "collision_sound_cooldown",
-        "score_sound",
-        "start_channel",
-        "collision_channel",
-        "score_channel",
-        "score_font",
-        "left_score",
-        "left_score_text",
-        "right_score",
-        "right_score_text",
-        "accumulator",
-        "time_step",
-        "running",
-        "paddles",
-        "paddles_rects",
-        "walls",
-        "walls_rects",
-        "background_music",
-        "background_channel",
-    )
-
-    def __init__(self, screen: pygame.surface.Surface) -> None:
+    def __init__(self, screen: pygame.surface.Surface, settings: dict) -> None:
         """Inicializa uma sessão do jogo"""
+        self.settings = settings
         self.scene_name = Scene.GAME
         self.next_scene_name = Scene.GAME
         self.screen = screen
 
         # Sprites
-        self.top_wall = Wall(self.screen, Side.TOP)
-        self.bottom_wall = Wall(self.screen, Side.BOTTOM)
-        self.left_paddle = Paddle(self.screen, Side.LEFT)
-        self.right_paddle = Paddle(self.screen, Side.RIGHT)
-        self.ball = Ball(self.screen)
+        self.top_wall = Wall(self.screen, Side.TOP, self.settings)
+        self.bottom_wall = Wall(self.screen, Side.BOTTOM, self.settings)
+        self.left_paddle = Paddle(self.screen, Side.LEFT, self.settings)
+        self.right_paddle = Paddle(self.screen, Side.RIGHT, self.settings)
+        self.ball = Ball(self.screen, self.settings)
 
         # Sprites group
         self.sprites = pygame.sprite.LayeredUpdates()
@@ -76,15 +34,15 @@ class Game:
         self.sprites.add(self.left_paddle)
         self.sprites.add(self.right_paddle)
         self.sprites.add(self.ball)
-        self.sprites.add(DashedLine(self.screen).get())
+        self.sprites.add(DashedLine(self.screen, self.settings).get())
 
         # Sounds
-        self.start_sound = pygame.mixer.Sound(START_SOUND)
+        self.start_sound = pygame.mixer.Sound(self.settings["start.sound"])
         self.start_sound.set_volume(0.2)
-        self.collision_sound = pygame.mixer.Sound(COLLISION_SOUND)
+        self.collision_sound = pygame.mixer.Sound(self.settings["collision.sound"])
         self.collision_sound.set_volume(0.2)
-        self.collision_sound_cooldown = COLLISION_SOUND_COOLDOWN
-        self.score_sound = pygame.mixer.Sound(SCORE_SOUND)
+        self.collision_sound_cooldown = self.settings["collision.sound.cooldown"]
+        self.score_sound = pygame.mixer.Sound(self.settings["score.sound"])
         self.score_sound.set_volume(0.2)
 
         # Channels
@@ -93,7 +51,7 @@ class Game:
         self.score_channel = pygame.mixer.Channel(2)
 
         # Score text
-        self.score_font = pygame.font.Font(FONT_FAMILY, FONT_SIZE)
+        self.score_font = pygame.font.Font(self.settings["font.family"], self.settings["game.score.font.size"])
         self.left_score = 0
         self.left_score_text = self.render_score_text(str(self.left_score))
         self.right_score = 0
@@ -108,7 +66,7 @@ class Game:
         self.walls_rects = [self.top_wall.rect, self.bottom_wall.rect]
 
         self.accumulator = 0.0
-        self.time_step = 1.0 / (FPS * 2.0)
+        self.time_step = 1.0 / (self.settings["game.fps"] * 2.0)
         self.running = True
 
     def process_events(self) -> None:
@@ -136,7 +94,7 @@ class Game:
         """Reproduz o som de colisão"""
         if self.collision_sound_cooldown <= 0:
             self.collision_channel.play(self.collision_sound)
-            self.collision_sound_cooldown = COLLISION_SOUND_COOLDOWN
+            self.collision_sound_cooldown = self.settings["collision.sound.cooldown"]
 
     def handle_goal(self, side: Side) -> None:
         """Gerencia a atualização do placar"""
@@ -188,7 +146,7 @@ class Game:
 
     def process_frames(self) -> None:
         """Processa os frames do jogo"""
-        self.screen.fill(SCREEN_COLOR)
+        self.screen.fill(pygame.color.THECOLORS[self.settings["screen.color"]])
 
         # Left score
         left_score_rect = self.left_score_text.get_rect()
@@ -207,4 +165,4 @@ class Game:
 
     def render_score_text(self, text: str) -> pygame.surface.Surface:
         """Rederiza o texto"""
-        return self.score_font.render(text, True, TEXT_COLOR)
+        return self.score_font.render(text, True, pygame.color.THECOLORS[self.settings["font.color"]])

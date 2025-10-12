@@ -1,0 +1,48 @@
+{
+    "font.family": "resources/Minisystem.otf",
+    "font.color": "grey50",
+    "game.score.font.size": 90,
+    "menu.title.font.size": 100,
+    "menu.option.font.size": 35,
+
+    "game.fps": 60.0,
+ 
+    "mixer.frequency": 44100,
+    "mixer.size": 16,
+    "mixer.channels": 2,
+    "mixer.buffer": 512,
+ 
+    "screen.width": 1920,
+    "screen.height": 1080,
+    "screen.color": "grey0",
+ 
+    "start.sound": "resources/start.mp3",
+    "collision.sound": "resources/collision.mp3",
+    "collision.sound.cooldown": 0.08,
+    "score.sound": "resources/score.mp3",
+    "background.music": "resources/background.mp3",
+
+    "ball.speed": 750,
+    "ball.size": 10,
+    "ball.color": "grey100",
+    "ball.angle.max": 45,
+    "ball.waiting.time.appear": 1.0,
+    "ball.waiting.time.settledown": 2.0,
+    "ball.waiting.time.play": 3.0,
+    "ball.acceleration": 1.0,
+    "ball.acceleration.increment": 0.1,
+    "ball.speed.max": 5000000,
+
+    "dash.size": 10,
+    "dash.color": "grey50",
+
+    "wall.height": 10,
+    "wall.color": "grey50",
+
+    "paddle.speed": 250,
+    "paddle.width": 10,
+    "paddle.height": 100,
+    "paddle.color": "grey100",
+    "paddle.acceleration": 1.0,
+    "paddle.acceleration.increment": 0.08
+}

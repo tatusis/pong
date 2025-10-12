@@ -2,16 +2,10 @@
 
 import pygame
 from menu import Menu
-from game import Game, FPS
+from game import Game
 from pygame.locals import QUIT, FULLSCREEN
 from scene import Scene
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGHT = 1080
-MIXER_FREQUENCY = 44100
-MIXER_SIZE = 16
-MIXER_CHANNELS = 2
-MIXER_BUFFER = 512
+import json
 
 
 class Pong:
@@ -19,10 +13,18 @@ class Pong:
 
     def __init__(self) -> None:
         """Inicializa uma instância do jogo"""
-        pygame.mixer.pre_init(MIXER_FREQUENCY, MIXER_SIZE, MIXER_CHANNELS, MIXER_BUFFER)
+        with open("config/settings.json", "r") as file:
+            self.settings = json.load(file)
+
+        pygame.mixer.pre_init(
+            self.settings["mixer.frequency"],
+            self.settings["mixer.size"],
+            self.settings["mixer.channels"],
+            self.settings["mixer.buffer"],
+        )
         pygame.init()
         flags = FULLSCREEN
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), flags)
+        self.screen = pygame.display.set_mode((self.settings["screen.width"], self.settings["screen.height"]), flags)
         pygame.mouse.set_visible(False)
         pygame.event.set_allowed([QUIT])
         self.change_scene(Scene.MENU)
@@ -33,14 +35,14 @@ class Pong:
         self.scene_name = scene_name
 
         if self.scene_name == Scene.MENU:
-            self.scene = Menu(self.screen)
+            self.scene = Menu(self.screen, self.settings)
         elif self.scene_name == Scene.GAME:
-            self.scene = Game(self.screen)
+            self.scene = Game(self.screen, self.settings)
 
     def run(self) -> None:
         """Executa uma instância do jogo"""
         while self.scene.running:
-            dt = self.clock.tick(FPS) / 1000.0
+            dt = self.clock.tick(self.settings["game.fps"]) / 1000.0
             self.scene.process_events()
             self.scene.process_logic(dt)
             self.scene.process_frames()

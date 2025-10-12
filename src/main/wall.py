@@ -3,20 +3,18 @@
 import pygame
 from side import Side
 
-WALL_HEIGHT = 10
-WALL_COLOR = pygame.color.THECOLORS["grey49"]
-
 
 class Wall(pygame.sprite.Sprite):
     """Define uma instância de uma parede"""
 
-    def __init__(self, screen: pygame.surface.Surface, side: Side) -> None:
+    def __init__(self, screen: pygame.surface.Surface, side: Side, settings: dict) -> None:
         """Inicializa uma instância de uma parede"""
         super().__init__()
+        self.settings = settings
         self._layer = 1
         self.screen = screen
-        self.image = pygame.surface.Surface((self.screen.get_rect().width, WALL_HEIGHT))
-        self.image.fill(WALL_COLOR)
+        self.image = pygame.surface.Surface((self.screen.get_rect().width, self.settings["wall.height"]))
+        self.image.fill(pygame.color.THECOLORS[self.settings["wall.color"]])
         self.rect = self.image.get_rect()
         self.side = side
 
