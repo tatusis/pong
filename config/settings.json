@@ -36,8 +36,11 @@
     "dash.size": 10,
     "dash.color": "grey50",
 
-    "wall.height": 10,
+    "wall.size": 10,
     "wall.color": "grey50",
+
+    "goal.size": 10,
+    "goal.color": "grey0",
 
     "paddle.speed": 250,
     "paddle.width": 10,
