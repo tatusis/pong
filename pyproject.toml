@@ -1,3 +1,7 @@
 [project]
+
 name = "pong"
 version = "1.0.0"
+description = "Another version of the pong game developed in python with pygame"
+requires-python = ">=3.13"
+license = { file = "LICENSE" }
