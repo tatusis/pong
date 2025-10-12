@@ -12,7 +12,7 @@ class DashedLine:
         self.settings = settings
         self.dash_sprites: list[Dash] = []
         dashes_count = round(
-            (screen.get_rect().height - (self.settings["wall.height"] * 2)) / self.settings["dash.size"] * 2
+            (screen.get_rect().height - (self.settings["wall.size"] * 2)) / self.settings["dash.size"] * 2
         )
 
         for i in range(dashes_count):

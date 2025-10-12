@@ -13,10 +13,10 @@ class Wall(pygame.sprite.Sprite):
         self.settings = settings
         self._layer = 1
         self.screen = screen
-        self.image = pygame.surface.Surface((self.screen.get_rect().width, self.settings["wall.height"]))
+        self.side = side
+        self.image = pygame.surface.Surface((self.screen.get_rect().width, self.settings["wall.size"]))
         self.image.fill(pygame.color.THECOLORS[self.settings["wall.color"]])
         self.rect = self.image.get_rect()
-        self.side = side
 
         if self.side == Side.TOP:
             self.rect.top = self.screen.get_rect().top

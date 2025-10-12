@@ -1,7 +1,7 @@
 # menu.py
 
-from scene import Scene
 import pygame
+from scene import Scene
 
 
 class Menu:

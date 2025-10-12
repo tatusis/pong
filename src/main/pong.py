@@ -1,11 +1,12 @@
 # pong.py
 
-import pygame
-from menu import Menu
-from game import Game
-from pygame.locals import QUIT, FULLSCREEN
-from scene import Scene
 import json
+
+import pygame
+from game import Game
+from menu import Menu
+from pygame.locals import FULLSCREEN, QUIT
+from scene import Scene
 
 
 class Pong:

@@ -35,15 +35,15 @@ class Paddle(pygame.sprite.Sprite):
         paddle_bottom = self.rect.bottom + changey
 
         if (
-            paddle_top >= self.screen.get_rect().top + self.settings["wall.height"]
-            and paddle_bottom <= self.screen.get_rect().bottom - self.settings["wall.height"]
+            paddle_top >= self.screen.get_rect().top + self.settings["wall.size"]
+            and paddle_bottom <= self.screen.get_rect().bottom - self.settings["wall.size"]
         ):
             self.rect.centery += changey
         else:
             if self.velocity.y < 0:
-                self.rect.top = self.screen.get_rect().top + self.settings["wall.height"]
+                self.rect.top = self.screen.get_rect().top + self.settings["wall.size"]
             elif self.velocity.y > 0:
-                self.rect.bottom = self.screen.get_rect().bottom - self.settings["wall.height"]
+                self.rect.bottom = self.screen.get_rect().bottom - self.settings["wall.size"]
 
     def update_direction(self, keys: pygame.key.ScancodeWrapper) -> None:
         """Atualiza a direção de uma raquete"""
