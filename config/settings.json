@@ -4,6 +4,8 @@
     "game.score.font.size": 90,
     "menu.title.font.size": 100,
     "menu.option.font.size": 35,
+    "menu.start.text": "Press (ENTER) to play",
+    "menu.exit.text": "Press (ESC) to exit",
 
     "game.fps": 60.0,
  

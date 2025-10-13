@@ -25,8 +25,8 @@ class Menu:
 
         # Opções
         self.option_font = pygame.font.Font(self.settings["font.family"], self.settings["menu.option.font.size"])
-        self.option_start_text = self.render_text("Press [ ENTER ] to play", self.option_font)
-        self.option_exit_text = self.render_text("Press [ ESC ] to exit", self.option_font)
+        self.option_start_text = self.render_text(self.settings["menu.start.text"], self.option_font)
+        self.option_exit_text = self.render_text(self.settings["menu.exit.text"], self.option_font)
 
         self.running = True
 
