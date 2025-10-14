@@ -14,19 +14,26 @@ class Menu:
         self.next_scene_name = Scene.MENU
         self.screen = screen
 
-        # Sound
+        # Music
         pygame.mixer.music.load(self.settings["background.music"])
-        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.set_volume(self.settings["music.volume"])
         pygame.mixer.music.play(-1)
 
-        # Título
-        self.title_font = pygame.font.Font(self.settings["font.family"], self.settings["menu.title.font.size"])
-        self.title_text = self.render_text("PONG", self.title_font)
+        # Sound
+        self.restart_sound = pygame.mixer.Sound(self.settings["restart.sound"])
 
-        # Opções
+        # Channels
+        self.menu_channel = pygame.mixer.Channel(0)
+        self.menu_channel.set_volume(self.settings["sound.volume"])
+
+        # Title
+        self.title_font = pygame.font.Font(self.settings["font.family"], self.settings["menu.title.font.size"])
+        self.title_text = self.render_text(self.settings["menu.title.text"], self.title_font)
+
+        # Options
         self.option_font = pygame.font.Font(self.settings["font.family"], self.settings["menu.option.font.size"])
-        self.option_start_text = self.render_text(self.settings["menu.start.text"], self.option_font)
-        self.option_exit_text = self.render_text(self.settings["menu.exit.text"], self.option_font)
+        self.start_text = self.render_text(self.settings["menu.start.text"], self.option_font)
+        self.exit_text = self.render_text(self.settings["menu.exit.text"], self.option_font)
 
         self.running = True
 
@@ -38,6 +45,7 @@ class Menu:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
                 elif event.key == pygame.K_RETURN:
                     pygame.mixer.music.stop()
+                    self.menu_channel.play(self.restart_sound)
                     self.next_scene_name = Scene.GAME
             elif event.type == pygame.QUIT:
                 self.running = False
@@ -53,19 +61,19 @@ class Menu:
         # Título
         title_text_rect = self.title_text.get_rect()
         title_text_rect.centerx = self.screen.get_rect().centerx
-        title_text_rect.centery = round(self.screen.get_rect().bottom * (3 / 10))
+        title_text_rect.centery = round(self.screen.get_rect().bottom * self.settings["screen.grid.height.04.12"])
         self.screen.blit(self.title_text, title_text_rect)
 
         # Opções
-        option_start_text_rect = self.option_start_text.get_rect()
-        option_start_text_rect.centerx = self.screen.get_rect().centerx
-        option_start_text_rect.centery = round(self.screen.get_rect().bottom * (6 / 10))
-        self.screen.blit(self.option_start_text, option_start_text_rect)
+        start_text_rect = self.start_text.get_rect()
+        start_text_rect.centerx = self.screen.get_rect().centerx
+        start_text_rect.centery = round(self.screen.get_rect().bottom * self.settings["screen.grid.height.07.12"])
+        self.screen.blit(self.start_text, start_text_rect)
 
-        option_exit_text_rect = self.option_exit_text.get_rect()
-        option_exit_text_rect.centerx = self.screen.get_rect().centerx
-        option_exit_text_rect.centery = round(self.screen.get_rect().bottom * (7 / 10))
-        self.screen.blit(self.option_exit_text, option_exit_text_rect)
+        exit_text_rect = self.exit_text.get_rect()
+        exit_text_rect.centerx = self.screen.get_rect().centerx
+        exit_text_rect.centery = round(self.screen.get_rect().bottom * self.settings["screen.grid.height.08.12"])
+        self.screen.blit(self.exit_text, exit_text_rect)
 
         pygame.display.flip()
 

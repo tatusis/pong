@@ -25,32 +25,32 @@ class Ball(pygame.sprite.Sprite):
         self.rect.x = -self.settings["ball.size"]
         self.rect.y = -self.settings["ball.size"]
 
-        self.state = BallState.WAITING
+        self.state = BallState.READY
         self.accumulator = 0.0
         self.velocity = pygame.Vector2()
         self.acceleration = self.settings["ball.acceleration"]
 
     def update(self, dt: float) -> None:
         """Atualiza o estado da bola"""
-        if self.state == BallState.WAITING:
-            self.handle_waiting_state(dt)
-        elif self.state == BallState.PLAYING:
+        if self.state == BallState.READY:
+            self.handle_ready_state(dt)
+        elif self.state == BallState.RUNNING:
             self.handle_playing_state(dt)
 
-    def handle_waiting_state(self, dt: float) -> None:
+    def handle_ready_state(self, dt: float) -> None:
         """Gerencia a bola em espera"""
         self.accumulator += dt
 
-        if self.accumulator < self.settings["ball.waiting.time.appear"]:
+        if self.accumulator < self.settings["ball.ready.time.appear"]:
             pass
-        elif self.accumulator < self.settings["ball.waiting.time.settledown"]:
+        elif self.accumulator < self.settings["ball.ready.time.settledown"]:
             self.reset_position()
-        elif self.accumulator < self.settings["ball.waiting.time.play"]:
+        elif self.accumulator < self.settings["ball.ready.time.play"]:
             pass
         else:
             self.reset_velocity()
             self.accumulator = 0.0
-            self.state = BallState.PLAYING
+            self.state = BallState.RUNNING
 
     def handle_playing_state(self, dt: float) -> None:
         """Gerencia a bola em jogo"""

@@ -7,4 +7,5 @@ class BallState(Enum):
     """Define um enumerador de estados para a bola"""
 
     WAITING = 0
-    PLAYING = 1
+    RUNNING = 1
+    READY = 2
