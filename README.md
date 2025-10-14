@@ -34,6 +34,8 @@ python src/main/pong.py
 
 The game requires two players. The player controlling the left paddle should use the W (up) and S (down) keys. The player controlling the right paddle should use the up ↑ and down ↓ arrow keys. Holding down the keys causes the paddle speed to accelerate. With each hit, the ball's speed increases by 10%. There's a maximum speed to keep the game's physics consistent.
 
+The game ends when one player reaches 10 points. That player is the winner.
+
 ## License
 
 GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
