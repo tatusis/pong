@@ -71,7 +71,7 @@ class Game:
 
         # Winner
         self.winner_font = pygame.font.Font(self.settings["font.family"], self.settings["game.winner.font.size"])
-        self.winner_text = self.render_text("Winner", self.winner_font)
+        self.winner_text = self.render_text(self.settings["game.winner.text"], self.winner_font)
 
         # Options
         self.option_font = pygame.font.Font(self.settings["font.family"], self.settings["game.option.font.size"])
@@ -202,42 +202,43 @@ class Game:
         self.screen.fill(pygame.color.THECOLORS[self.settings["screen.color"]])
 
         # Left score
-        left_score_rect = self.left_score_text.get_rect()
-        left_score_rect.centerx = round(self.screen.get_rect().width * self.settings["screen.grid.width.03.12"])
-        left_score_rect.centery = round(self.screen.get_rect().height * self.settings["screen.grid.height.02.12"])
-        self.screen.blit(self.left_score_text, left_score_rect)
+        self.show_text(
+            self.left_score_text,
+            self.settings["screen.grid.width.03.12"],
+            self.settings["screen.grid.height.02.12"],
+        )
 
         # Right score
-        right_score_rect = self.right_score_text.get_rect()
-        right_score_rect.centerx = round(self.screen.get_rect().width * self.settings["screen.grid.width.09.12"])
-        right_score_rect.centery = round(self.screen.get_rect().height * self.settings["screen.grid.height.02.12"])
-        self.screen.blit(self.right_score_text, right_score_rect)
+        self.show_text(
+            self.right_score_text,
+            self.settings["screen.grid.width.09.12"],
+            self.settings["screen.grid.height.02.12"],
+        )
 
         if self.winner is not None:
-            winner_rect = self.winner_text.get_rect()
-
             if self.winner == Side.LEFT:
-                position = round(self.screen.get_rect().width * self.settings["screen.grid.width.03.12"])
+                position = self.settings["screen.grid.width.03.12"]
             elif self.winner == Side.RIGHT:
-                position = round(self.screen.get_rect().width * self.settings["screen.grid.width.09.12"])
+                position = self.settings["screen.grid.width.09.12"]
 
-            winner_rect.centerx = position
-            winner_rect.centery = round(self.screen.get_rect().height * self.settings["screen.grid.height.07.12"])
-            self.screen.blit(self.winner_text, winner_rect)
-
-            restart_rect = self.restart_text.get_rect()
-            restart_rect.centerx = position
-            restart_rect.centery = round(self.screen.get_rect().height * self.settings["screen.grid.height.09.12"])
-            self.screen.blit(self.restart_text, restart_rect)
-
-            exit_rect = self.exit_text.get_rect()
-            exit_rect.centerx = position
-            exit_rect.centery = round(self.screen.get_rect().height * self.settings["screen.grid.height.10.12"])
-            self.screen.blit(self.exit_text, exit_rect)
+            self.show_text(self.winner_text, position, self.settings["screen.grid.height.07.12"])
+            self.show_text(self.restart_text, position, self.settings["screen.grid.height.09.12"])
+            self.show_text(
+                self.exit_text,
+                position,
+                self.settings["screen.grid.height.10.12"],
+            )
 
         self.sprites.draw(self.screen)
         pygame.display.flip()
 
     def render_text(self, text: str, font: pygame.font.Font) -> pygame.surface.Surface:
-        """Rederiza o texto"""
+        """Renderiza o texto"""
         return font.render(text, True, pygame.color.THECOLORS[self.settings["font.color"]])
+
+    def show_text(self, text: pygame.surface.Surface, x: float, y: float) -> None:
+        """Apresenta o texto"""
+        rect = text.get_rect()
+        rect.centerx = round(self.screen.get_rect().width * x)
+        rect.centery = round(self.screen.get_rect().height * y)
+        self.screen.blit(text, rect)
