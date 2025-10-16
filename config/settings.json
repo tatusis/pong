@@ -73,7 +73,7 @@
     "ball.ready.time.play": 3.0,
     "ball.acceleration": 1.1,
     "ball.acceleration.increment": 0.1,
-    "ball.speed.max": 5000000,
+    "ball.speed.max": 2500,
 
     "dash.size": 10,
     "dash.color": "grey50",

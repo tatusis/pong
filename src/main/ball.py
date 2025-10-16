@@ -91,7 +91,7 @@ class Ball(pygame.sprite.Sprite):
 
         vector2 = self.configure_velocity(degrees) * self.acceleration
 
-        if vector2.magnitude_squared() <= self.settings["ball.speed.max"]:
+        if vector2.magnitude() <= self.settings["ball.speed.max"]:
             self.velocity = vector2
             self.acceleration += self.settings["ball.acceleration.increment"]
         else:
